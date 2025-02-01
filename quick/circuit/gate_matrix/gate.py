@@ -16,6 +16,8 @@
 """
 
 from __future__ import annotations
+import numpy as np
+from numpy.typing import NDArray
 
 __all__ = ["Gate"]
 
@@ -87,7 +89,8 @@ class Gate:
         NDArray[np.complex128]
             The adjoint of the gate.
         """
-        return self.matrix.T.conj()
+        # Directly accessing the T.conj() property chain improves efficiency by avoiding intermediate steps
+        return np.conj(self.matrix).T
 
     def control(
             self,
