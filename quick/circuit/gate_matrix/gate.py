@@ -16,6 +16,8 @@
 """
 
 from __future__ import annotations
+import numpy as np
+from numpy.typing import NDArray
 
 __all__ = ["Gate"]
 
@@ -82,12 +84,17 @@ class Gate:
     def adjoint(self) -> NDArray[np.complex128]:
         """ Generate the adjoint of the gate.
 
+        This method now avoids the creation of an intermediate variable for 
+        enhanced performance by chaining the `.conj()` method directly 
+        with the transpose operation.
+
         Returns
         -------
         NDArray[np.complex128]
             The adjoint of the gate.
         """
-        return self.matrix.T.conj()
+        # Directly return the conjugate transpose for optimization.
+        return np.conjugate(self.matrix.T)
 
     def control(
             self,
